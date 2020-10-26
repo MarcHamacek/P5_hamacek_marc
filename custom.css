@@ -1,0 +1,13 @@
+/*Accueil*/
+
+.header-color {
+    background-color: #f3e9f1;
+}
+
+.jumbotron {
+    background-color: transparent;
+}
+
+.card {
+    margin-bottom: 40px;
+}
