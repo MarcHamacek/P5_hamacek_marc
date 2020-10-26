@@ -11,3 +11,9 @@
 .card {
     margin-bottom: 40px;
 }
+
+.btn-article {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
