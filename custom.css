@@ -1,8 +1,16 @@
 /*Accueil*/
 
+/*Header*/
+
 .header-color {
     background-color: #f3e9f1;
 }
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(0,0,0,.9);
+}
+
+/*Main*/
 
 .jumbotron {
     background-color: transparent;
@@ -15,5 +23,12 @@
 .btn-article {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
+}
+
+/*Panier*/
+
+
+.btn-commander {
+    text-align: center;
 }
