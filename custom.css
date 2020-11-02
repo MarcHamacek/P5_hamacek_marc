@@ -32,3 +32,12 @@
 .btn-commander {
     text-align: center;
 }
+
+.row-detail-produit {
+    display: flex;
+    justify-content: center;
+}
+
+.detail-produit {
+    margin-top: 50px;
+}
