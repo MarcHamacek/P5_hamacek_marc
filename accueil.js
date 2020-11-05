@@ -13,7 +13,7 @@ fetch("http://localhost:3000/api/cameras").then(function(response) {
                     <p class="card-text">${product.description}</p>
                 </section>
                 <section class="btn-article">
-                    <a id="lien-produit-1" class="btn btn-success col-6 col-lg-4" href="produit.html?id=${product._id}" role="button">Voir détails</a>
+                    <a class="btn btn-success col-6 col-lg-4" href="produit.html?id=${product._id}" role="button">Voir détails</a>
                 </section>
             </section>
         </section>
