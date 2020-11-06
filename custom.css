@@ -41,3 +41,10 @@
 .detail-produit {
     margin-top: 50px;
 }
+
+/*Produit*/
+
+.btn-popup {
+    display: flex;
+    justify-content: center;
+}

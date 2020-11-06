@@ -32,7 +32,7 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
                     </select>
                 </section>
                 <section class="btn-article">
-                    <a id="ajout-panier" class="btn btn-success col-4" href="./panier.html">Ajouter au panier</a>
+                    <a id="ajout-panier" class="btn btn-success col-4" href="">Ajouter au panier</a>
                 </section>
             </section>
         </section>
