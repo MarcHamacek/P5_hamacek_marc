@@ -32,7 +32,7 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
                     </select>
                 </section>
                 <section class="btn-article">
-                    <a id="ajout-panier" class="btn btn-success col-4" href="">Ajouter au panier</a>
+                    <button id="ajout-panier" class="btn btn-success col-4">Ajouter au panier</button>
                 </section>
             </section>
         </section>
@@ -45,6 +45,44 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
             `
         }
 })
+
+/*const ajoutPanier = document.getElementById('ajout-panier');
+function popUps() {
+    const popUp = document.getElementById('btn-popup');
+    popUp.innerHTML += `
+        <section class="alert alert-success alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading">Confirmation</h5>
+            <p>Votre produit a bien été ajouté au panier !</p>
+            <a id="voir-panier" class="btn btn-success text-center" role="button" href="./panier.html">Voir mon panier</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </section>
+
+        `
+};
+
+ajoutPanier.addEventListener('click', popUps);*/
+
+/*const ajoutPanier = document.querySelector("#ajout-panier");
+const ajouts = window.alert('Votre produit a bien été ajouté au panier !');
+
+ajoutPanier.addEventListener('click', ajouts, once);*/
+
+
+
+/*const ajoutPanier = getElementById('ajout-panier');
+function productStorage() {
+    localStorage.setItem('productName', data.name);
+    localStorage.setItem('productDescription', data.description);
+    localStorage.setItem('productPrice', data.price)
+};
+
+ajoutPanier.addEventListener('click', function() {
+    window.alert("Votre produit a bien été ajouté au panier !");
+    console.log(productStorage);
+});*/
+
 
 
 

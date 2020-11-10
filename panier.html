@@ -62,29 +62,7 @@
 <!-- Panier-->
 
 <section class="container">
-    <section class="row">
-        <section class="card col-8">
-            <section class="card-body">
-                <h2 class="card-title">Produit choisi</h2>
-                <p class="card-text">Option choisie</p>
-            </section>    
-        </section>
-        <section class="card col-2">
-            <section class="card-body">
-                <label for="quantity-select">Quantité</label>
-                <select name="quantity" id="quantity-select">
-                    <option value="">--Sélectionnez--</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                </select>
-            </section>    
-        </section>
-        <section class="card col-2">
-            <section class="card-body">
-                <h2 class="card-text">Prix</h2>
-            </section>    
-        </section>
+    <section class="row" id="mon-panier">
     </section>
 </section>
 
@@ -118,12 +96,12 @@
                     </section>
                     <section class="form-group col-6">
                         <label for="email" class="form-check-label">Email</label>
-                        <input type="email" class="form-control" id="email">
+                        <input type="email" class="form-control" id="email" required>
                     </section>
                 </section>
                 <section class="row">
                     <section class="col-9 btn-commander">
-                        <a href="./confirmation.html" class="btn btn-success col-4" role="button">Commander</a>
+                        <a href="./confirmation.html" class="btn btn-success col-4" role="button" type="submit">Commander</a>
                     </section>
                 </section>
             </form>
