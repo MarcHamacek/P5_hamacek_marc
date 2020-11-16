@@ -44,44 +44,51 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
             <option value="">${lense}</option>
             `
         }
+
+        const ajoutPanier = document.getElementById('ajout-panier');
+        function productStorage() {
+            const produit = new Product(data._id, data.name, data.description, data.price, data.imageUrl, 1);
+            if(localStorage.getItem('products') === null) {
+                const productsArray = [produit];
+                const productsString = JSON.stringify(productsArray);
+                localStorage.setItem('products', productsString);
+            } else {
+                // On extrait d'abord la liste des produits existants sous forme de tableau
+                const productsString = localStorage.getItem('products');
+                const products = JSON.parse(productsString);
+
+                // On verifie si le produit qu'on tente d'ajouter ne se trouve pas deja dans ce tableau
+                const productsFound = products.filter((product) => product.id == produit.id);
+                if(productsFound.length > 0) {
+                    // Si ca s'y trouve, on incremente sa quantite
+                    productsFound[0].quantity += 1;
+                } else {
+                    // Sinon on le rajoute dans le tableau
+                    products.push(produit)
+                }
+                // On sauvegarde de nouveau le tableau
+                const productsStr = JSON.stringify(products);
+                localStorage.setItem('products', productsStr);
+            }
+        };
+
+        ajoutPanier.addEventListener('click', function() {
+            window.alert("Votre produit a bien été ajouté au panier !");
+            productStorage();
+        });
 })
 
-/*const ajoutPanier = document.getElementById('ajout-panier');
-function popUps() {
-    const popUp = document.getElementById('btn-popup');
-    popUp.innerHTML += `
-        <section class="alert alert-success alert-dismissible fade show" role="alert">
-            <h5 class="alert-heading">Confirmation</h5>
-            <p>Votre produit a bien été ajouté au panier !</p>
-            <a id="voir-panier" class="btn btn-success text-center" role="button" href="./panier.html">Voir mon panier</a>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </section>
+class Product {
+    constructor(id, name, description, price, imageUrl, quantity) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price; 
+        this.imageUrl = imageUrl;
+        this.quantity = quantity;
+    }
+}
 
-        `
-};
-
-ajoutPanier.addEventListener('click', popUps);*/
-
-/*const ajoutPanier = document.querySelector("#ajout-panier");
-const ajouts = window.alert('Votre produit a bien été ajouté au panier !');
-
-ajoutPanier.addEventListener('click', ajouts, once);*/
-
-
-
-/*const ajoutPanier = getElementById('ajout-panier');
-function productStorage() {
-    localStorage.setItem('productName', data.name);
-    localStorage.setItem('productDescription', data.description);
-    localStorage.setItem('productPrice', data.price)
-};
-
-ajoutPanier.addEventListener('click', function() {
-    window.alert("Votre produit a bien été ajouté au panier !");
-    console.log(productStorage);
-});*/
 
 
 
