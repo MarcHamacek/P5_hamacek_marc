@@ -16,11 +16,8 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
                 <img src="${data.imageUrl}" alt="" class="card-img-top">
                 <section class="card-body">
                     <section class="row">
-                        <section class="col-9">
+                        <section class="col text-left">
                             <h2 class="card-title">${data.name}</h2>
-                        </section>
-                        <section class="col-3">
-                            <h2 class="card-title price">${data.price}</h2>
                         </section>
                     </section>
                     <p class="card-text">${data.description}</p>
@@ -31,8 +28,13 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
                         <option value="">--Sélectionnez--</option>
                     </select>
                 </section>
+                <section class="card-body">
+                    <section class="col text-center">
+                        <h2 class="card-title price">${data.price}</h2>
+                    </section>
+                </section>
                 <section class="btn-article">
-                    <button id="ajout-panier" class="btn btn-success col-4">Ajouter au panier</button>
+                    <button id="ajout-panier" class="btn btn-success col-8 col-lg-4">Ajouter au panier</button>
                 </section>
             </section>
         </section>
