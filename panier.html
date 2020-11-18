@@ -85,12 +85,6 @@
 
 <section class="container">
     <section class="row" id="total-price">
-        <section class="card col-10 text-right">
-            <h3>Prix total</h3>
-        </section>
-        <section class="card col-2 text-center">
-            <h3>E x*y</h3>
-        </section>
     </section>
 </section>
 
@@ -104,31 +98,31 @@
                 <section class="row">
                     <section class="form-group col-3">
                         <label for="firstName" class="form-check-label">Prénom</label>
-                        <input type="text" class="form-control" id="firstName" pattern="[a-z]{1,20}" required>
+                        <input type="text" class="form-control" id="firstName" pattern="[a-z]{2,20}" required>
                     </section>
                     <section class="form-group col-6">
                         <label for="lastName" class="form-check-label">Nom</label>
-                        <input type="text" class="form-control" id="lastName" pattern="[a-z]{1,20}" required>
+                        <input type="text" class="form-control" id="lastName" pattern="[a-z]{2,20}" required>
                     </section>
                 </section>
                 <section class="row">
                     <section class="form-group col-9">
                         <label for="address" class="form-check-label">Addresse</label>
-                        <input type="text" class="form-control" id="address" pattern="[a-z]{1,50}" required>
+                        <input type="text" class="form-control" id="address" pattern="[a-z]{5,50}" required>
                     </section>
                 </section>
                 <section class="row">
                     <section class="form-group col-3">
                         <label for="city" class="form-check-label">Ville</label>
-                        <input type="text" class="form-control" id="city" pattern="[a-z]{1,50}" required>
+                        <input type="text" class="form-control" id="city" pattern="[a-z]{2,50}" required>
                     </section>
                     <section class="form-group col-6">
                         <label for="email" class="form-check-label">Email</label>
-                        <input type="email" class="form-control" id="email" pattern="[a-z]{1,50}" required>
+                        <input type="email" class="form-control" id="email" pattern="[a-z]{4,50}" required>
                     </section>
                 </section>
                 <section class="row">
-                    <section class="col-9 btn-commander">
+                    <section class="col-9 btn-commander mt-4">
                         <a href="./confirmation.html" class="btn btn-success col-4" role="button" type="submit">Commander</a>
                     </section>
                 </section>

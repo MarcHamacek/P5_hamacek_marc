@@ -1,13 +1,3 @@
-/*const produitPanier = document.getElementById('mon-panier');
-function produitChoisi() {
-    var name = localStorage.getItem('productName');
-    var description = localStorage.getItem('productDescription')
-    var price = localStorage.getItem('productPrice');
-}
-
-produitPanier.innerHTML = `
-
-`*/
 
 //Récupérer les éléments du local storage
 const productsString = localStorage.getItem('products');
@@ -17,10 +7,12 @@ const products = JSON.parse(productsString);
 
 
 //Création d'une boucle pour intégrer tous les produits
-
+let totalPriceOfOrder = 0;
 for(product of products) {
     const monPanier = document.getElementById('mon-panier');
     console.log(product)
+    const totalPricePerProduct = product.price * product.quantity;
+    totalPriceOfOrder += totalPricePerProduct;
     //Intégrer la section HTML avec les produits ajoutés au panier
     monPanier.innerHTML += `
             <section class="card col-1">
@@ -43,10 +35,23 @@ for(product of products) {
             </section>
             <section class="card col-2 text-center">
                 <section class="card-body">
-                    <h3 class="card-text">ns</h3>
+                    <h3 class="card-text">${totalPricePerProduct}</h3>
                 </section>    
             </section>
 
 `
 }
+const totalPrice = document.getElementById('total-price');
+totalPrice.innerHTML += `
+        <section class="card col-10 text-right">
+            <h3>Prix total</h3>
+        </section>
+        <section class="card col-2 text-center">
+            <h3>${totalPriceOfOrder}</h3>
+        </section>
+
+`
+
+
+
 
