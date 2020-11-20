@@ -62,10 +62,10 @@ fetch(`http://localhost:3000/api/cameras/${id}`).then(function(response) {
                 // On verifie si le produit qu'on tente d'ajouter ne se trouve pas deja dans ce tableau
                 const productsFound = products.filter((product) => product.id == produit.id);
                 if(productsFound.length > 0) {
-                    // Si ca s'y trouve, on incremente sa quantite
+                // Si ca s'y trouve, on incremente sa quantite
                     productsFound[0].quantity += 1;
                 } else {
-                    // Sinon on le rajoute dans le tableau
+                // Sinon on le rajoute dans le tableau
                     products.push(produit)
                 }
                 // On sauvegarde de nouveau le tableau

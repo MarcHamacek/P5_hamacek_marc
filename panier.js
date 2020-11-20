@@ -23,7 +23,7 @@ for(product of products) {
                     <h3>${product.name}</h3>
                 </section>
             </section>
-            <section class="card col-2 text-center">
+            <section class="card col-2 text-center">S
                 <section class="card-body">
                     <h3>${product.price}</h3>
                 </section>
@@ -52,6 +52,20 @@ totalPrice.innerHTML += `
 
 `
 
+//Envoi du formaulaire au back-end
 
 
+
+//Récupérer les données du formulaire
+
+//Récupérer les ID des produits
+
+//Les mettres sous forme d'array
+
+//Au clic du bouton, envoyer les données
+
+const orderToSend = document.getElementById('sendOrder');
+/*orderToSend.addEventListener('click', function() {
+
+})*/
 
