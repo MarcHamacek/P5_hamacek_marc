@@ -1,9 +1,12 @@
-fetch("http://localhost:3000/api/cameras").then(function(response) {
+//On récupère les données produit sur l'API à l'aide de fetch
+fetch("http://localhost:3000/api/cameras").then(function (response) {
+    //Transcription des données produit en JSON
     return response.json();
-}) .then(function(data) {
+}).then(function (data) {
     const products = document.getElementById('products');
-    for(product of data) {
+    for (product of data) {
         console.log(product)
+        //Intégration des détails produits
         products.innerHTML += ` 
         <section class="col-12 col-lg-6">
             <section class="card">
@@ -17,8 +20,6 @@ fetch("http://localhost:3000/api/cameras").then(function(response) {
                 </section>
             </section>
         </section>
-
         `
     }
 })
-
