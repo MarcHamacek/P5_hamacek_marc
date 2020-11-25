@@ -4,6 +4,11 @@ const productsString = localStorage.getItem('products');
 //Transcrire en JSON
 const products = JSON.parse(productsString);
 
+
+//Si le panier est vide, afficher un message le signalant
+
+//Sinon, afficher les produits
+
 //Création d'une boucle pour intégrer tous les produits
 let totalPriceOfOrder = 0;
 for (product of products) {
