@@ -4,11 +4,6 @@ const productsString = localStorage.getItem('products');
 //Transcrire en JSON
 const products = JSON.parse(productsString);
 
-
-//Si le panier est vide, afficher un message le signalant
-
-//Sinon, afficher les produits
-
 //Création d'une boucle pour intégrer tous les produits
 let totalPriceOfOrder = 0;
 for (product of products) {
@@ -58,6 +53,64 @@ totalPrice.innerHTML += `
 
 `
 
+//Validation du formulaire
+
+const error = document.querySelector('.error');
+
+// Fonction qui nous sert à vérifier les inputs utilisateur, hors email et adresse
+function validateInput(name, nbrCaracteres, message) { 
+
+    let reg = new RegExp(`^[a-zA-Z \u00C0-\u00FF ]{2,${nbrCaracteres}}$`, "i") ;
+    let input = document.getElementById(name);
+    const error = document.querySelector(`.error.${name}`);
+
+    if(reg.test(input.value)) { // Si c'est ok, on valide et on enlève le message d'alerte si il était là
+        error.innerHTML = "";
+        return true;
+    } else { // Ajouter un message d'erreur
+
+        error.innerHTML = message;
+        input.focus();
+        return false;
+    }
+};
+
+// Fonction qui nous sert à vérifier l'adresse
+function validateAddress() { 
+
+    let reg = /^\d+\s[A-z]+\s[A-z]+/;
+    let addressInput = document.getElementById('address');
+    const error = document.querySelector(`.error.address`);
+
+    if(reg.test(addressInput.value)) { // Si c'est ok, on valide et on enlève le message d'alerte si il était là
+    error.innerHTML = "";
+    return true;
+    } else { // Ajouter un message d'erreur
+        error.innerHTML = "Votre addresse n'est pas valide, elle doit contenir entre 5 et 50 caractères !"
+        addressInput.focus();
+        return false;
+    }
+};
+
+// Fonction qui nous sert à vérifier l'email
+function validateEmail() { 
+
+    let reg = /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/;
+    let emailInput = document.getElementById('email');
+    const error = document.querySelector(`.error.email`); 
+
+    if(reg.test(emailInput.value)) { // Si c'est ok, on valide et on enlève le message d'alerte si il était là
+        error.innerHTML = "";
+        return true;
+    } else { // Ajouter un message d'erreur
+        error.innerHTML = "Votre email n'est pas valide !"
+        emailInput.focus();
+        return false;
+    }
+};
+
+
+
 //Envoi du formaulaire au back-end
 
 /**
@@ -87,6 +140,14 @@ console.log(idProducts);
 const orderToSend = document.getElementById('sendOrder');
 orderToSend.addEventListener('click', function (e) {
     e.preventDefault();
+    const isPrenomValid = validateInput('firstName', 20, "Votre prénom n'est pas valide, il doit contenir entre 2 et 20 caractères !");
+    const isNomValid = validateInput('lastName', 20, "Votre nom n'est pas valide, il doit contenir entre 2 et 20 caractères !");
+    const isVilleValid = validateInput('city', 50, "Le nom de votre ville n'est pas valide, il doit contenir entre 2 et 50 caractères !");
+    const isAddressValid = validateAddress();
+    const isEmailValid = validateEmail();
+    if (isPrenomValid == false || isNomValid == false || isVilleValid == false || isAddressValid == false || isEmailValid == false) {
+        return;
+    }
     fetch('http://localhost:3000/api/cameras/order', {
             method: 'POST',
             body: JSON.stringify({

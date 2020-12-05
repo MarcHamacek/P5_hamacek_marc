@@ -98,27 +98,37 @@
                 <section class="row">
                     <section class="form-group col-4">
                         <label for="firstName" class="form-check-label">Prénom</label>
-                        <input type="text" class="form-control" id="firstName" pattern="[a-z]{2,20}" required>
+                        <!--[A-Za-z]-->
+                        <input type="text" class="form-control" id="firstName" required>
+                        <div class="error firstName alert-danger mt-2"></div>
                     </section>
                     <section class="form-group col-8">
                         <label for="lastName" class="form-check-label">Nom</label>
-                        <input type="text" class="form-control" id="lastName" pattern="[a-z]{2,20}" required>
+                        <!--[A-Za-z]-->
+                        <input type="text" class="form-control" id="lastName" pattern="[A-Za-z]{2,20}" required>
+                        <div class="error lastName alert-danger mt-2"></div>
                     </section>
                 </section>
                 <section class="row">
                     <section class="form-group col-12">
                         <label for="address" class="form-check-label">Addresse</label>
-                        <input type="text" class="form-control" id="address" pattern="[a-z]{5,50}" required>
+                        <!--[A-Za-z0-9]-->
+                        <input type="text" class="form-control" id="address" pattern="[A-Za-z0-9]{5,50}" required>
+                        <div class="error address alert-danger mt-2"></div>
                     </section>
                 </section>
                 <section class="row">
                     <section class="form-group col-4">
                         <label for="city" class="form-check-label">Ville</label>
-                        <input type="text" class="form-control" id="city" pattern="[a-z]{2,50}" required>
+                        <!--[A-Za-z]-->
+                        <input type="text" class="form-control" id="city" pattern="[A-Za-z]{2,50}" required>
+                        <div class="error city alert-danger mt-2"></div>
                     </section>
                     <section class="form-group col-8">
                         <label for="email" class="form-check-label">Email</label>
-                        <input type="email" class="form-control" id="email" pattern="[a-z]{4,50}" required>
+                        <!--[a-z\.\-]+@[a-z]+\.[a-z]{2,3}-->
+                        <input type="email" class="form-control" id="email" pattern="[a-z\.\-]+@[a-z]+\.[a-z]{2,3}" required>
+                        <div class="error email alert-danger mt-2"></div>
                     </section>
                 </section>
                 <section class="row">
