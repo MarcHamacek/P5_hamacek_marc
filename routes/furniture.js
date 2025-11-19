@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
-const furnitureCtrl = require('../controllers/furniture');
+import {
+  getAllFurniture,
+  getOneFurniture,
+  orderFurniture,
+} from '../controllers/furniture.js';
 
-router.get('/', furnitureCtrl.getAllFurniture);
-router.get('/:id', furnitureCtrl.getOneFurniture);
-router.post('/order', furnitureCtrl.orderFurniture);
+router.get('/', getAllFurniture);
+router.get('/:id', getOneFurniture);
+router.post('/order', orderFurniture);
 
-module.exports = router;
+export default router;

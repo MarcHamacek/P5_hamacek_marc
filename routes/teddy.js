@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
-const teddyCtrl = require('../controllers/teddy');
+import {
+  getAllTeddies,
+  getOneTeddy,
+  orderTeddies,
+} from '../controllers/teddy.js';
 
-router.get('/', teddyCtrl.getAllTeddies);
-router.get('/:id', teddyCtrl.getOneTeddy);
-router.post('/order', teddyCtrl.orderTeddies);
+router.get('/', getAllTeddies);
+router.get('/:id', getOneTeddy);
+router.post('/order', orderTeddies);
 
-module.exports = router;
+export default router;

@@ -3,18 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
+    "dotenv": "^17.2.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.3.8",
-    "mongoose-unique-validator": "^2.0.2",
-    "uuid": "^3.3.2"
+    "mongoose": "^8.20.0",
+    "uuid": "^9.0.1"
   }
 }

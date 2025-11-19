@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const furnitureSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  description: { type: String, required: true },
-  varnish: { type: [String], required: true },
-  imageUrl: { type: String, required: true }
+const furnitureSchema = Schema({
+  name: String,
+  price: Number,
+  description: String,
+  varnish: [String],
+  imageUrl: String,
 });
 
-module.exports = mongoose.model('Furniture', furnitureSchema);
+export default model('Furniture', furnitureSchema);
