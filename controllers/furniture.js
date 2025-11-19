@@ -1,7 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
-const Furniture = require('../models/Furniture');
+import { v4 as uuidv4 } from 'uuid';
+import Furniture from '../models/Furniture.js';
 
-exports.getAllFurniture = (req, res, next) => {
+export function getAllFurniture(req, res, next) {
   Furniture.find()
     .then((furniture) => {
       const mappedFurniture = furniture.map((item) => {
@@ -14,9 +14,9 @@ exports.getAllFurniture = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
-exports.getOneFurniture = (req, res, next) => {
+export function getOneFurniture(req, res, next) {
   Furniture.findById(req.params.id)
     .then((furniture) => {
       if (!furniture) {
@@ -33,7 +33,7 @@ exports.getOneFurniture = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
 /**
  *
@@ -48,7 +48,7 @@ exports.getOneFurniture = (req, res, next) => {
  * products: [string] <-- array of product _id
  *
  */
-exports.orderFurniture = (req, res, next) => {
+export function orderFurniture(req, res, next) {
   if (
     !req.body.contact ||
     !req.body.contact.firstName ||
@@ -94,4 +94,4 @@ exports.orderFurniture = (req, res, next) => {
     .catch((error) => {
       return res.status(500).json(new Error(error));
     });
-};
+}

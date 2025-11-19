@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const cameraSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  description: { type: String, required: true },
-  lenses: { type: [String], required: true },
-  imageUrl: { type: String, required: true }
+const cameraSchema = Schema({
+  name: String,
+  price: Number,
+  description: String,
+  lenses: [String],
+  imageUrl: String,
 });
 
-module.exports = mongoose.model('Camera', cameraSchema);
+export default model('Camera', cameraSchema);

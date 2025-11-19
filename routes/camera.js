@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
-const cameraCtrl = require('../controllers/camera');
+import {
+  getAllCameras,
+  getOneCamera,
+  orderCameras,
+} from '../controllers/camera.js';
 
-router.get('/', cameraCtrl.getAllCameras);
-router.get('/:id', cameraCtrl.getOneCamera);
-router.post('/order', cameraCtrl.orderCameras);
+router.get('/', getAllCameras);
+router.get('/:id', getOneCamera);
+router.post('/order', orderCameras);
 
-module.exports = router;
+export default router;

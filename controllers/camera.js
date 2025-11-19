@@ -1,7 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
-const Camera = require('../models/Camera');
+import { v4 as uuidv4 } from 'uuid';
+import Camera from '../models/Camera.js';
 
-exports.getAllCameras = (req, res, next) => {
+export function getAllCameras(req, res, next) {
   Camera.find()
     .then((cameras) => {
       const mappedCameras = cameras.map((camera) => {
@@ -14,9 +14,9 @@ exports.getAllCameras = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
-exports.getOneCamera = (req, res, next) => {
+export function getOneCamera(req, res, next) {
   Camera.findById(req.params.id)
     .then((camera) => {
       if (!camera) {
@@ -29,7 +29,7 @@ exports.getOneCamera = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
 /**
  *
@@ -44,7 +44,7 @@ exports.getOneCamera = (req, res, next) => {
  * products: [string] <-- array of product _id
  *
  */
-exports.orderCameras = (req, res, next) => {
+export function orderCameras(req, res, next) {
   if (
     !req.body.contact ||
     !req.body.contact.firstName ||
@@ -90,4 +90,4 @@ exports.orderCameras = (req, res, next) => {
     .catch((error) => {
       return res.status(500).json(new Error(error));
     });
-};
+}

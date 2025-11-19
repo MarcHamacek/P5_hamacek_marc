@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const teddySchema = mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  description: { type: String, required: true },
-  colors: { type: [String], required: true },
-  imageUrl: { type: String, required: true }
+const teddySchema = Schema({
+  name: String,
+  price: Number,
+  description: String,
+  colors: [String],
+  imageUrl: String,
 });
 
-module.exports = mongoose.model('Teddy', teddySchema);
+export default model('Teddy', teddySchema);

@@ -1,7 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
-const Teddy = require('../models/Teddy');
+import { v4 as uuidv4 } from 'uuid';
+import Teddy from '../models/Teddy.js';
 
-exports.getAllTeddies = (req, res, next) => {
+export function getAllTeddies(req, res, next) {
   Teddy.find()
     .then((teddies) => {
       const mappedTeddies = teddies.map((teddy) => {
@@ -14,9 +14,9 @@ exports.getAllTeddies = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
-exports.getOneTeddy = (req, res, next) => {
+export function getOneTeddy(req, res, next) {
   Teddy.findById(req.params.id)
     .then((teddy) => {
       if (!teddy) {
@@ -29,7 +29,7 @@ exports.getOneTeddy = (req, res, next) => {
     .catch(() => {
       res.status(500).send(new Error('Database error!'));
     });
-};
+}
 
 /**
  *
@@ -44,7 +44,7 @@ exports.getOneTeddy = (req, res, next) => {
  * products: [string] <-- array of product _id
  *
  */
-exports.orderTeddies = (req, res, next) => {
+export function orderTeddies(req, res, next) {
   if (
     !req.body.contact ||
     !req.body.contact.firstName ||
@@ -90,4 +90,4 @@ exports.orderTeddies = (req, res, next) => {
     .catch((error) => {
       return res.status(500).json(new Error(error));
     });
-};
+}
