@@ -1,0 +1,29 @@
+{
+  "orders": [
+    {
+      "orderId": "63a81dce-a396-4bd3-805e-63c83281966f",
+      "contact": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "address": "dddddd",
+        "city": "Hendaye",
+        "email": "marc.hamacek@gmail.com"
+      },
+      "products": [
+        {
+          "_id": "5be1ef211c9d44000030b062",
+          "name": "Hirsch 400DTS",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "price": 309900,
+          "lenses": [
+            "50mm 1.8",
+            "60mm 2.8",
+            "24-60mm 2.8/4.5"
+          ],
+          "imageUrl": "http://localhost:3000/images/vcam_2.jpg"
+        }
+      ],
+      "createdAt": "2025-11-21T12:33:32.120Z"
+    }
+  ]
+}
