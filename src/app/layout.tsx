@@ -1,7 +1,10 @@
+import * as React from 'react';
+
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import { Header } from '@/components';
 
@@ -28,8 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <React.Fragment>
+          <CssBaseline />
+          <Container disableGutters maxWidth={false}>
         <Header />
         {children}
+          </Container>
+        </React.Fragment>
       </body>
     </html>
   );
