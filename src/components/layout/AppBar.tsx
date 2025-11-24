@@ -9,7 +9,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { createTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -19,6 +18,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+
+import theme from '@/theme/theme';
 
 const pages = [
   { id: 1, name: 'Accueil', link: '/', icon: HomeIcon },
@@ -30,15 +31,6 @@ const pages = [
     icon: EmailIcon,
   },
 ];
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#f3e9f1',
-      dark: '#2E183B',
-    },
-  },
-});
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -56,7 +48,7 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: theme.palette.primary.main }}
+      sx={{ backgroundColor: theme.palette.secondary.main }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -64,7 +56,7 @@ function ResponsiveAppBar() {
             sx={{
               display: { xs: 'none', md: 'flex' },
               mr: 1,
-              color: theme.palette.primary.dark,
+              color: theme.palette.primary.main,
             }}
           />
           <Typography
