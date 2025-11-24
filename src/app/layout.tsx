@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { Header } from '@/components';
+import { AppBar } from '@/components';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,8 +34,8 @@ export default function RootLayout({
         <React.Fragment>
           <CssBaseline />
           <Container disableGutters maxWidth={false}>
-        <Header />
-        {children}
+            <AppBar />
+            {children}
           </Container>
         </React.Fragment>
       </body>
