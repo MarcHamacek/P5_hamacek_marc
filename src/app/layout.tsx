@@ -4,9 +4,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 
 import { AppBar } from '@/components';
+import ThemeRegistry from '@/components/ThemeRegistry';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,13 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <React.Fragment>
-          <CssBaseline />
+        <ThemeRegistry>
           <Container disableGutters maxWidth={false}>
             <AppBar />
             {children}
           </Container>
-        </React.Fragment>
+        </ThemeRegistry>
       </body>
     </html>
   );
