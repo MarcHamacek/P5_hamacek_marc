@@ -89,7 +89,7 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: theme.palette.primary.dark }}
             >
               <MenuIcon />
             </IconButton>
@@ -107,7 +107,10 @@ function ResponsiveAppBar() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+                color: theme.palette.primary.dark,
+              }}
             >
               {pages.map((page) => {
                 const Icon = page.icon;
@@ -118,7 +121,7 @@ function ResponsiveAppBar() {
                     component="a"
                     href={page.link}
                   >
-                    <Icon sx={{ mr: 1 }} />
+                    <Icon sx={{ mr: 1, color: theme.palette.primary.dark }} />
                     <Typography sx={{ textAlign: 'center' }}>
                       {page.name}
                     </Typography>
@@ -129,7 +132,11 @@ function ResponsiveAppBar() {
           </Box>
 
           <ShoppingBagIcon
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              mr: 1,
+              color: theme.palette.primary.dark,
+            }}
           />
           <Typography
             variant="h5"
@@ -143,7 +150,7 @@ function ResponsiveAppBar() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: theme.palette.primary.dark,
               textDecoration: 'none',
             }}
           >
