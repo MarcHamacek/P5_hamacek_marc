@@ -1,9 +1,12 @@
+import { Grid } from '@mui/material';
+
 import { Hero, ProductCard } from '@/components';
 
 type Product = {
   _id: string;
   name: string;
   price: number;
+  description: string;
   imageUrl: string;
 };
 
@@ -20,13 +23,22 @@ export default async function Home() {
   return (
     <div>
       <Hero />
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((product: Product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      </div>
+      <Grid
+        container
+        maxWidth={1200}
+        columns={12}
+        spacing={2}
+        display="flex"
+        mx="auto"
+        my="16px"
+        justifyContent="center"
+      >
+        {products.map((product: Product) => (
+          <Grid key={product._id} sx={{ alignSelf: 'center' }}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }
