@@ -23,8 +23,7 @@ export default function Hero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          pt: { xs: 14, sm: 20 },
-          pb: { xs: 8, sm: 12 },
+          pt: { xs: 6, sm: 6 },
         }}
       >
         <Stack
@@ -33,7 +32,6 @@ export default function Hero() {
           sx={{ alignItems: 'center', width: { xs: '100%', sm: '70%' } }}
         >
           <Typography
-            variant="h1"
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },

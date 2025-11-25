@@ -3,8 +3,6 @@ import * as React from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import Container from '@mui/material/Container';
-
 import { AppBar } from '@/components';
 import ThemeRegistry from '@/components/ThemeRegistry';
 
@@ -32,10 +30,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeRegistry>
-          <Container disableGutters maxWidth={false}>
-            <AppBar />
-            {children}
-          </Container>
+          <AppBar />
+          {children}
         </ThemeRegistry>
       </body>
     </html>
