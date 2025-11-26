@@ -1,14 +1,9 @@
 'use client';
 
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+
+import ButtonCard from '../button/ButtonCard';
 
 interface ProductCardProps {
   product: {
@@ -37,22 +32,11 @@ export default function MediaCard({ product }: ProductCardProps) {
         </Typography>
       </CardContent>
       <Stack sx={{ alignItems: 'flex-end', marginRight: '16px' }}>
-        <Button
-          href={`/products/${product._id}`}
-          variant="contained"
-          size="medium"
-          endIcon={<ReadMoreIcon />}
-          sx={{
-            '&:hover': {
-              transform: 'scale(1.05)',
-              boxShadow: 3,
-              backgroundColor: 'primary.main',
-            },
-            transition: 'all 0.2s ease-in-out',
-          }}
-        >
-          Détails
-        </Button>
+        <ButtonCard
+          title="Détails"
+          icon={<ReadMoreIcon />}
+          link={`/products/${product._id}`}
+        />
       </Stack>
     </Card>
   );
