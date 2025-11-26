@@ -1,14 +1,7 @@
 import { Grid } from '@mui/material';
 
 import { Hero, ProductCard } from '@/components';
-
-type Product = {
-  _id: string;
-  name: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-};
+import { Camera } from '@/types';
 
 async function getProducts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
@@ -33,7 +26,7 @@ export default async function Home() {
         my="16px"
         justifyContent="center"
       >
-        {products.map((product: Product) => (
+        {products.map((product: Camera) => (
           <Grid key={product._id} sx={{ alignSelf: 'center' }}>
             <ProductCard product={product} />
           </Grid>
