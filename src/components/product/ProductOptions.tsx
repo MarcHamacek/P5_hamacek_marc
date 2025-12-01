@@ -42,9 +42,11 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 export default function ProductOptions({
   product,
   addToCart,
+  loading = false,
 }: {
   product: Camera;
   addToCart: (productId: string, option: string) => Promise<void>;
+  loading?: boolean;
 }) {
   const theme = useTheme();
   const options = product.lenses || [];
@@ -93,11 +95,10 @@ export default function ProductOptions({
       >
         <ButtonCard
           icon={<AddShoppingCart />}
-          disabled={!optionSelected}
-          title="Ajouter au panier"
-          link=""
+          disabled={!optionSelected || loading}
+          title={loading ? 'Ajout en cours...' : 'Ajouter au panier'}
           onClick={() => addToCart(product._id, optionSelected)}
-        ></ButtonCard>
+        />
       </Stack>
     </Box>
   );
