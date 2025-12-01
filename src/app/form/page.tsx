@@ -110,7 +110,7 @@ export default function CartPage() {
         </Grid>
         <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
           <ButtonCard
-            title="Commander"
+            title="Valider"
             icon={<LocalShipping />}
             onClick={() => handleSubmit()}
           />
@@ -153,7 +153,7 @@ export default function CartPage() {
       <Grid size={12}>
         <Stack sx={{ alignItems: 'flex-end' }}>
           <ButtonCard
-            title="Commander"
+            title="Valider"
             icon={<LocalShipping />}
             onClick={() => handleSubmit()}
           />
