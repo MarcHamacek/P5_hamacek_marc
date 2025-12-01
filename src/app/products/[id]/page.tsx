@@ -1,6 +1,7 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   Card,
@@ -11,16 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ProductOptions } from '@/components';
+import { LoadingSpinner, ProductOptions } from '@/components';
 import { Camera } from '@/types';
-
-async function getProduct(id: string) {
-  const res = await fetch(`/api/products/${id}`, {
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Failed to fetch product');
-  return res.json();
-}
 
 export default function ProductPage({
   params,
@@ -29,43 +22,57 @@ export default function ProductPage({
 }) {
   const { id } = React.use(params);
 
-  const [product, setProduct] = React.useState<Camera | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState<Camera | null>(null);
+  const [cartLoading, setCartLoading] = useState(false);
 
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      const data = await getProduct(id);
-      if (active) setProduct(data);
-    })();
-    return () => {
-      active = false;
+  useEffect(() => {
+    const getProduct = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/products/${id}`, {
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error('Failed to fetch product');
+        const data = await res.json();
+        setProduct(data);
+      } catch {
+        console.log('Failed to load product');
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
     };
+    getProduct();
   }, [id]);
 
   const addToCart = async (
     productId: string,
     option: string
   ): Promise<void> => {
-    const res = await fetch(`/api/cart`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ productId, option }),
-    });
-    if (!res.ok) throw new Error('Failed to add to cart');
+    setCartLoading(true);
+    try {
+      const res = await fetch(`/api/cart`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId, option }),
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+    } catch {
+      console.error('Failed to add product to cart');
+    } finally {
+      setCartLoading(false);
+    }
   };
 
+  if (loading || cartLoading) {
+    return <LoadingSpinner />;
+  }
+
   if (!product) {
-    return (
-      <div>
-        <Grid container spacing={2} justifyContent="center">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>Loading...</div>
-          </div>
-        </Grid>
-      </div>
-    );
+    return <div>Product not found</div>;
   }
 
   return (
@@ -88,7 +95,7 @@ export default function ProductPage({
           <CardHeader
             title={product.name}
             action={
-              <Typography variant="h5">{product.price / 100}€</Typography>
+              <Typography variant="h5">{product.price / 100} €</Typography>
             }
           />
           <CardContent>

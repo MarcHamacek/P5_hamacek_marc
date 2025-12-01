@@ -1,17 +1,40 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 import { Grid } from '@mui/material';
 
-import { Hero, ProductCard } from '@/components';
+import { Hero, LoadingSpinner, ProductCard } from '@/components';
 import { Camera } from '@/types';
 
-async function getProducts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
-    cache: 'no-store',
-  });
-  return res.json();
-}
+export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Camera[]>([]);
 
-export default async function Home() {
-  const products = await getProducts();
+  useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/products', {
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+        const productsList = Array.isArray(data) ? data : data.products || [];
+        setProducts(productsList);
+      } catch {
+        console.error('Failed to load products');
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProducts();
+  }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>

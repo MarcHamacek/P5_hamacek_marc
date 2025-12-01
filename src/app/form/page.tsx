@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import { LocalShipping } from '@mui/icons-material';
 import {
   Grid,
@@ -10,11 +12,19 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { ButtonCard } from '@/components';
+import { ButtonCard, LoadingSpinner } from '@/components';
 
 export default function CartPage() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down(576));
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down(576));
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isMobile = isMobileQuery && mounted;
 
   const handleSubmit = async () => {
     const contact = {
@@ -37,6 +47,7 @@ export default function CartPage() {
       return;
     }
 
+    setLoading(true);
     try {
       const cartRes = await fetch('/api/cart');
       if (!cartRes.ok) throw new Error('Impossible de récupérer le panier');
@@ -63,8 +74,14 @@ export default function CartPage() {
     } catch (err) {
       console.error('Order submit failed', err);
       alert('Une erreur est survenue lors de la commande.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   if (isMobile) {
     return (
@@ -110,9 +127,10 @@ export default function CartPage() {
         </Grid>
         <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
           <ButtonCard
-            title="Valider"
+            title={loading ? 'Validation...' : 'Valider'}
             icon={<LocalShipping />}
             onClick={() => handleSubmit()}
+            disabled={loading}
           />
         </Grid>
       </Grid>
@@ -153,9 +171,10 @@ export default function CartPage() {
       <Grid size={12}>
         <Stack sx={{ alignItems: 'flex-end' }}>
           <ButtonCard
-            title="Valider"
+            title={loading ? 'Validation...' : 'Valider'}
             icon={<LocalShipping />}
             onClick={() => handleSubmit()}
+            disabled={loading}
           />
         </Stack>
       </Grid>

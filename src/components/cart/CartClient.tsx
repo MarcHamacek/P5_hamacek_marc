@@ -10,7 +10,6 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Grid,
   Table,
   TableBody,
@@ -21,6 +20,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+
+import { LoadingSpinner } from '@/components';
 
 import ButtonCard from '../button/ButtonCard';
 
@@ -94,19 +95,7 @@ export default function CartClient() {
     };
   }, []);
 
-  if (loading)
-    return (
-      <Grid
-        container
-        direction="column"
-        spacing={3}
-        justifyContent="center"
-        alignItems="center"
-        sx={{ py: 8 }}
-      >
-        <CircularProgress color="primary" />
-      </Grid>
-    );
+  if (loading) return <LoadingSpinner />;
   if (error)
     return (
       <Grid
