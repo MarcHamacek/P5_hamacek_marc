@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 import { ArrowBack, Checklist, LocalShipping } from '@mui/icons-material';
 import {
-  Alert,
   Box,
   Card,
   CardContent,
@@ -21,7 +20,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { LoadingSpinner } from '@/components';
+import { AlertMessage, LoadingSpinner } from '@/components';
 
 import ButtonCard from '../button/ButtonCard';
 
@@ -107,9 +106,10 @@ export default function CartClient() {
         sx={{ py: 8 }}
       >
         <Grid size={8}>
-          <Alert variant="outlined" severity="error">
-            La commande n&rsquo;a pu être réalisée.
-          </Alert>
+          <AlertMessage
+            content="La commande n’a pu être réalisée."
+            severity="error"
+          />
         </Grid>
         <Grid>
           <ButtonCard
@@ -131,10 +131,8 @@ export default function CartClient() {
         alignItems="center"
         sx={{ py: 8 }}
       >
-        <Grid size={8}>
-          <Alert variant="outlined" severity="info">
-            Votre panier est vide.
-          </Alert>
+        <Grid size={{ xs: 10, md: 8 }}>
+          <AlertMessage content="Votre panier est vide." severity="info" />
         </Grid>
         <Grid>
           <ButtonCard icon={<Checklist />} title="Voir les produits" link="/" />

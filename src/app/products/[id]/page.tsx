@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { LoadingSpinner, ProductOptions } from '@/components';
+import { AlertMessage, LoadingSpinner, ProductOptions } from '@/components';
 import { Camera } from '@/types';
 
 export default function ProductPage({
@@ -25,6 +25,8 @@ export default function ProductPage({
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<Camera | null>(null);
   const [cartLoading, setCartLoading] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -51,6 +53,7 @@ export default function ProductPage({
     option: string
   ): Promise<void> => {
     setCartLoading(true);
+    setErrorMessage(null);
     try {
       const res = await fetch(`/api/cart`, {
         method: 'POST',
@@ -60,14 +63,19 @@ export default function ProductPage({
         body: JSON.stringify({ productId, option }),
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);
-    } catch {
-      console.error('Failed to add product to cart');
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 3000);
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
+      setErrorMessage(errorMsg);
+      setTimeout(() => setErrorMessage(null), 3000);
+      console.error('Failed to add product to cart', err);
     } finally {
       setCartLoading(false);
     }
   };
 
-  if (loading || cartLoading) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
@@ -86,6 +94,22 @@ export default function ProductPage({
         mx="auto"
         my={3}
       >
+        {addedToCart && (
+          <Grid sx={{ width: '100%' }}>
+            <AlertMessage
+              content="Votre produit a bien été ajouté au panier."
+              severity="success"
+            />
+          </Grid>
+        )}
+        {errorMessage && (
+          <Grid sx={{ width: '100%' }}>
+            <AlertMessage
+              content="Votre produit n'a pas pu être ajouté au panier."
+              severity="error"
+            />
+          </Grid>
+        )}
         <Card sx={{ maxWidth: 900, padding: '8px' }}>
           <CardMedia
             sx={{ height: 300 }}
@@ -102,7 +126,12 @@ export default function ProductPage({
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {product.description}
             </Typography>
-            <ProductOptions product={product} addToCart={addToCart} />
+            <ProductOptions
+              product={product}
+              addToCart={addToCart}
+              loading={cartLoading}
+              onSuccess={() => setAddedToCart(true)}
+            />
           </CardContent>
         </Card>
       </Grid>

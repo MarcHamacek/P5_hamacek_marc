@@ -43,10 +43,12 @@ export default function ProductOptions({
   product,
   addToCart,
   loading = false,
+  onSuccess,
 }: {
   product: Camera;
   addToCart: (productId: string, option: string) => Promise<void>;
   loading?: boolean;
+  onSuccess?: () => void;
 }) {
   const theme = useTheme();
   const options = product.lenses || [];
@@ -58,6 +60,12 @@ export default function ProductOptions({
       target: { value },
     } = event;
     setOptionSelected(typeof value === 'string' ? value : value);
+  };
+
+  const handleAddToCart = async () => {
+    await addToCart(product._id, optionSelected);
+    setOptionSelected('');
+    onSuccess?.();
   };
 
   return (
@@ -97,7 +105,7 @@ export default function ProductOptions({
           icon={<AddShoppingCart />}
           disabled={!optionSelected || loading}
           title={loading ? 'Ajout en cours...' : 'Ajouter au panier'}
-          onClick={() => addToCart(product._id, optionSelected)}
+          onClick={handleAddToCart}
         />
       </Stack>
     </Box>
