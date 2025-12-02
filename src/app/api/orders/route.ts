@@ -14,9 +14,11 @@ async function readJson(filePath: string) {
   try {
     const raw = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(raw);
-  } catch (error) {
-    console.error('Failed to read JSON from', filePath, error);
-    return null;
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to read JSON from' + filePath },
+      { status: 400 }
+    );
   }
 }
 
@@ -44,7 +46,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    // connect to DB and fetch product details
     await connectDB();
 
     const origin = new URL(request.url).origin;
@@ -71,17 +72,16 @@ export async function POST(request: Request) {
     const existing = (await readJson(ORDERS_PATH)) || { orders: [] };
     existing.orders.push(order);
     await writeJson(ORDERS_PATH, existing);
-
-    // clear server cart
     await writeJson(CART_PATH, { items: [] });
 
     return NextResponse.json(
       { contact, products: productsFull, orderId },
       { status: 201 }
     );
-  } catch (error: unknown) {
-    console.error('Failed to create order', error);
-    const message = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to create order' },
+      { status: 500 }
+    );
   }
 }

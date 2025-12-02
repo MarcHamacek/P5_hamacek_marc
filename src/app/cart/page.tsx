@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
+import { NextResponse } from 'next/server';
 
 import { ArrowBack, Checklist, LocalShipping } from '@mui/icons-material';
 import {
@@ -70,17 +71,20 @@ export default function CartClient() {
                 imageUrl: p.imageUrl,
                 price: p.price,
               } as EnrichedItem;
-            } catch (error) {
-              console.error('Failed to load product', error);
+            } catch {
+              NextResponse.json(
+                { error: 'Failed to load product' },
+                { status: 500 }
+              );
+
               return { ...it } as EnrichedItem;
             }
           })
         );
 
         if (mounted) setItems(enriched);
-      } catch (err: unknown) {
-        console.error('Failed to load cart', err);
-        if (mounted) setError(err instanceof Error ? err.message : 'Erreur');
+      } catch {
+        NextResponse.json({ error: 'Failed to load cart' }, { status: 500 });
       } finally {
         if (mounted) setLoading(false);
       }
