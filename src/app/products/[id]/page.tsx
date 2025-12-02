@@ -1,54 +1,140 @@
-import Image from 'next/image';
+'use client';
 
-import ProductOptions from '@/components/product/ProductOptions';
+import { useEffect, useState } from 'react';
+import React from 'react';
 
-async function getProduct(id: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
-    { cache: 'no-store' }
-  );
-  return res.json();
-}
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Grid,
+  Typography,
+} from '@mui/material';
 
-async function addToCart(productId: string, option: string) {
-  'use server';
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId, option }),
-  });
-  return res.json();
-}
+import { AlertMessage, LoadingSpinner, ProductOptions } from '@/components';
+import { Camera } from '@/types';
 
-export default async function ProductPage({
+export default function ProductPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  const { id } = React.use(params);
+
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState<Camera | null>(null);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/products/${id}`, {
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error('Failed to fetch product');
+        const data = await res.json();
+        setProduct(data);
+      } catch {
+        console.log('Failed to load product');
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProduct();
+  }, [id]);
+
+  const addToCart = async (
+    productId: string,
+    option: string
+  ): Promise<void> => {
+    setCartLoading(true);
+    setErrorMessage(null);
+    try {
+      const res = await fetch(`/api/cart`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId, option }),
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 3000);
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
+      setErrorMessage(errorMsg);
+      setTimeout(() => setErrorMessage(null), 3000);
+      console.error('Failed to add product to cart', err);
+    } finally {
+      setCartLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="grid md:grid-cols-2 gap-8">
-        <div>
-          <Image
-            src={`/images/${product.imageUrl}`}
-            alt={product.name}
-            className="w-full rounded-lg"
-            width={500}
-            height={500}
+    <div>
+      <Grid
+        container
+        spacing={2}
+        maxWidth={900}
+        columns={12}
+        justifyContent="center"
+        mx="auto"
+        my={3}
+      >
+        {addedToCart && (
+          <Grid sx={{ width: '100%' }}>
+            <AlertMessage
+              content="Votre produit a bien été ajouté au panier."
+              severity="success"
+            />
+          </Grid>
+        )}
+        {errorMessage && (
+          <Grid sx={{ width: '100%' }}>
+            <AlertMessage
+              content="Votre produit n'a pas pu être ajouté au panier."
+              severity="error"
+            />
+          </Grid>
+        )}
+        <Card sx={{ maxWidth: 900, padding: '8px' }}>
+          <CardMedia
+            sx={{ height: 300 }}
+            image={`/images/${product.imageUrl}`}
+            title={product.name}
           />
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-2xl text-blue-600 mb-4">{product.price / 100}€</p>
-          <p className="mb-6">{product.description}</p>
-          <ProductOptions product={product} addToCart={addToCart} />
-        </div>
-      </div>
-    </main>
+          <CardHeader
+            title={product.name}
+            action={
+              <Typography variant="h5">{product.price / 100} €</Typography>
+            }
+          />
+          <CardContent>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {product.description}
+            </Typography>
+            <ProductOptions
+              product={product}
+              addToCart={addToCart}
+              loading={cartLoading}
+              onSuccess={() => setAddedToCart(true)}
+            />
+          </CardContent>
+        </Card>
+      </Grid>
+    </div>
   );
 }

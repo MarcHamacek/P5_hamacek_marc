@@ -1,33 +1,60 @@
-import { Hero, ProductCard } from '@/components';
+'use client';
 
-type Product = {
-  _id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-};
+import { useEffect, useState } from 'react';
 
-async function getProducts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
-    cache: 'no-store',
-  });
-  return res.json();
-}
+import { Grid } from '@mui/material';
 
-export default async function Home() {
-  const products = await getProducts();
+import { Hero, LoadingSpinner, ProductCard } from '@/components';
+import { Camera } from '@/types';
+
+export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Camera[]>([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/products', {
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+        const productsList = Array.isArray(data) ? data : data.products || [];
+        setProducts(productsList);
+      } catch {
+        console.error('Failed to load products');
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProducts();
+  }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>
       <Hero />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Nos Produits</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((product: Product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      </div>
+      <Grid
+        container
+        maxWidth={1200}
+        columns={12}
+        spacing={2}
+        display="flex"
+        mx="auto"
+        my="16px"
+        justifyContent="center"
+      >
+        {products.map((product: Camera) => (
+          <Grid key={product._id} sx={{ alignSelf: 'center' }}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }

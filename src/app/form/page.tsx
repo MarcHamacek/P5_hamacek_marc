@@ -1,10 +1,32 @@
 'use client';
 
-import { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+
+import { LocalShipping } from '@mui/icons-material';
+import {
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+
+import { ButtonCard, LoadingSpinner } from '@/components';
 
 export default function CartPage() {
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const theme = useTheme();
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down(576));
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isMobile = isMobileQuery && mounted;
+
+  const handleSubmit = async () => {
     const contact = {
       firstName: (document.getElementById('firstName') as HTMLInputElement)
         .value,
@@ -25,6 +47,7 @@ export default function CartPage() {
       return;
     }
 
+    setLoading(true);
     try {
       const cartRes = await fetch('/api/cart');
       if (!cartRes.ok) throw new Error('Impossible de récupérer le panier');
@@ -50,97 +73,109 @@ export default function CartPage() {
       window.location.href = '/confirmation?orderId=' + orderId;
     } catch (err) {
       console.error('Order submit failed', err);
-      alert('Une erreur est survenue lors de la commande.');
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isMobile) {
+    return (
+      <Grid
+        container
+        direction="column"
+        spacing={2}
+        sx={{ py: 4, px: 2, mt: 2 }}
+      >
+        <Grid>
+          <Typography
+            variant="h6"
+            gutterBottom
+            color={theme.palette.primary.main}
+          >
+            Veuillez renseigner vos informations:
+          </Typography>
+        </Grid>
+        <Grid>
+          <TextField
+            fullWidth
+            id="firstName"
+            label="Prénom"
+            variant="outlined"
+          />
+        </Grid>
+        <Grid>
+          <TextField fullWidth id="lastName" label="Nom" variant="outlined" />
+        </Grid>
+        <Grid>
+          <TextField fullWidth id="email" label="Email" variant="outlined" />
+        </Grid>
+        <Grid>
+          <TextField
+            fullWidth
+            id="address"
+            label="Adresse"
+            variant="outlined"
+          />
+        </Grid>
+        <Grid>
+          <TextField fullWidth id="city" label="Ville" variant="outlined" />
+        </Grid>
+        <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+          <ButtonCard
+            title={loading ? 'Validation...' : 'Valider'}
+            icon={<LocalShipping />}
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          />
+        </Grid>
+      </Grid>
+    );
+  }
+
   return (
-    <div>
-      <h1>Formulaire</h1>
-      <form className="form" id="formUser">
-        <section className="row">
-          <section className="form-group col-4">
-            <label htmlFor="firstName" className="form-check-label">
-              Prénom
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="firstName"
-              required
-            />
-            <div className="error firstName alert-danger mt-2"></div>
-          </section>
-          <section className="form-group col-8">
-            <label htmlFor="lastName" className="form-check-label">
-              Nom
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              pattern="[A-Za-z]{2,20}"
-              required
-            />
-            <div className="error lastName alert-danger mt-2"></div>
-          </section>
-        </section>
-        <section className="row">
-          <section className="form-group col-12">
-            <label htmlFor="address" className="form-check-label">
-              Addresse
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              pattern="[A-Za-z0-9]{5,50}"
-              required
-            />
-            <div className="error address alert-danger mt-2"></div>
-          </section>
-        </section>
-        <section className="row">
-          <section className="form-group col-4">
-            <label htmlFor="city" className="form-check-label">
-              Ville
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="city"
-              pattern="[A-Za-z]{2,50}"
-              required
-            />
-            <div className="error city alert-danger mt-2"></div>
-          </section>
-          <section className="form-group col-8">
-            <label htmlFor="email" className="form-check-label">
-              Email
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              pattern="[a-z\.\-]+@[a-z]+\.[a-z]{2,3}"
-              required
-            />
-            <div className="error email alert-danger mt-2"></div>
-          </section>
-        </section>
-        <section className="row">
-          <section className="col btn-commander mt-4">
-            <button
-              onClick={handleSubmit}
-              className="btn btn-success col-4"
-              id="sendOrder"
-              type="button"
-            >
-              Commander
-            </button>
-          </section>
-        </section>
-      </form>
-    </div>
+    <Grid
+      container
+      columns={12}
+      spacing={2}
+      sx={{ py: 4, px: 2, mt: 4, maxWidth: 'sm', mx: 'auto' }}
+    >
+      <Grid size={12} sx={{ mb: 2 }}>
+        <Typography
+          variant="h5"
+          gutterBottom
+          color={theme.palette.primary.main}
+        >
+          Veuillez renseigner vos informations:
+        </Typography>
+      </Grid>
+      <Grid size={6}>
+        <TextField fullWidth id="firstName" label="Prénom" variant="outlined" />
+      </Grid>
+      <Grid size={6}>
+        <TextField fullWidth id="lastName" label="Nom" variant="outlined" />
+      </Grid>
+      <Grid size={12}>
+        <TextField fullWidth id="email" label="Email" variant="outlined" />
+      </Grid>
+      <Grid size={12}>
+        <TextField fullWidth id="address" label="Adresse" variant="outlined" />
+      </Grid>
+      <Grid size={12}>
+        <TextField fullWidth id="city" label="Ville" variant="outlined" />
+      </Grid>
+      <Grid size={12}>
+        <Stack sx={{ alignItems: 'flex-end' }}>
+          <ButtonCard
+            title={loading ? 'Validation...' : 'Valider'}
+            icon={<LocalShipping />}
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          />
+        </Stack>
+      </Grid>
+    </Grid>
   );
 }
