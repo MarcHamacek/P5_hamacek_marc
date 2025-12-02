@@ -1,29 +1,43 @@
-import Image from 'next/image';
-import Link from 'next/link';
+'use client';
+
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+
+import ButtonCard from '../button/ButtonCard';
 
 interface ProductCardProps {
   product: {
     _id: string;
     name: string;
+    description: string;
     price: number;
     imageUrl: string;
   };
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function MediaCard({ product }: ProductCardProps) {
   return (
-    <Link href={`/products/${product._id}`}>
-      <div className="border rounded-lg p-4 hover:shadow-lg transition">
-        <Image
-          src={`/images/${product.imageUrl}`}
-          alt={product.name}
-          width={300}
-          height={300}
-          className="w-full h-48 object-cover mb-4"
+    <Card sx={{ maxWidth: 345, padding: '8px' }}>
+      <CardMedia
+        sx={{ height: 140 }}
+        image={`/images/${product.imageUrl}`}
+        title={product.name}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {product.name}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {product.description}
+        </Typography>
+      </CardContent>
+      <Stack sx={{ alignItems: 'flex-end', marginRight: '16px' }}>
+        <ButtonCard
+          title="Détails"
+          icon={<ReadMoreIcon />}
+          link={`/products/${product._id}`}
         />
-        <h2 className="text-xl font-semibold">{product.name}</h2>
-        <p className="text-gray-600">{product.price / 100}€</p>
-      </div>
-    </Link>
+      </Stack>
+    </Card>
   );
 }

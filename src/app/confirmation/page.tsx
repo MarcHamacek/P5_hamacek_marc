@@ -2,34 +2,66 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import { Alert, AlertTitle, Grid, Link, Typography } from '@mui/material';
+
 export default function CartPage() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
 
   return (
-    <div>
-      <section className="container">
-        <section className="row">
-          <section className="col">
-            <section className="jumbotron">
-              <h1 className="text-center alert alert-success p-4">
-                Votre commande a bien été validée !
-              </h1>
-            </section>
-          </section>
-        </section>
-      </section>
-      <section className="col-8 mx-auto">
-        <section className="card">
-          <section className="card-body text-center">
-            <h2 className="card-title">Votre numéro de commande est le :</h2>
-            <h4 className="card-text pt-4 pb-4">{orderId ?? '—'}</h4>
-            <h4 className="card-text">
-              Vous recevrez vos articles sous 5 jours !
-            </h4>
-          </section>
-        </section>
-      </section>
-    </div>
+    <>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        spacing={2}
+        sx={{ py: 4, px: 2, mt: 2 }}
+      >
+        <Grid>
+          <Typography variant="h5" align="center" gutterBottom sx={{ mt: 4 }}>
+            Confirmation de commande
+          </Typography>
+        </Grid>
+        <Grid sx={{ my: 2 }}>
+          <Typography
+            variant="body1"
+            align="center"
+            gutterBottom
+            sx={{ mb: 1 }}
+          >
+            Votre commande N°
+          </Typography>
+          <Typography
+            variant="h6"
+            align="center"
+            border={1}
+            borderColor="primary.main"
+            padding={1}
+          >
+            {orderId}
+          </Typography>
+          <Typography variant="body1" align="center" sx={{ mt: 1 }}>
+            a bien été validée !
+          </Typography>
+        </Grid>
+        <Grid
+          container
+          justifyContent="center"
+          size={{ xs: 12, md: 8 }}
+          sx={{ my: 3 }}
+        >
+          <Alert severity="info">
+            <AlertTitle>Vos informations de livraison</AlertTitle>
+            Livraison estimée entre 3 et 5 jours ouvrés à l&apos;adresse
+            indiquée.
+          </Alert>
+        </Grid>
+        <Grid sx={{ my: 2 }}>
+          <Link href="/" underline="always">
+            Retour à la page d&apos;accueil
+          </Link>
+        </Grid>
+      </Grid>
+    </>
   );
 }
