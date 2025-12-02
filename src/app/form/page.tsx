@@ -73,8 +73,6 @@ export default function CartPage() {
       window.location.href = '/confirmation?orderId=' + orderId;
     } catch (err) {
       console.error('Order submit failed', err);
-      alert('Une erreur est survenue lors de la commande.');
-    } finally {
       setLoading(false);
     }
   };
