@@ -2,6 +2,12 @@
 
 Website for shopping cameras.
 
+## Version
+
+Current version: 2.1.0
+
+See [CHANGELOG.md](./CHANGELOG.md) for detailed version history.
+
 ### Installation
 
 Clone this repo. From within the project folder, run `npm install`. You
@@ -21,19 +27,6 @@ pnpm dev
 # or
 bun dev
 ```
-
-## Version 1
-
-Technologies used for development:
-
-- Frontend:
-  `HTML5, Bootstrap and VanillaJS`
-- Backend:
-  `Node.JS, Express, Mongoose and MongoDB`
-
-## Version 2.1
-
-- Migration to Next.js fullstack project (React + TypeScript)
 
 ## Deploy on Vercel
 
