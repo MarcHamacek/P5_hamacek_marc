@@ -5,7 +5,11 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 import Camera from '@/lib/models/Camera';
-import connectDB from '@/lib/mongodb';
+
+type ProductWithImage = {
+  imageUrl?: string;
+  [key: string]: unknown;
+};
 
 const ORDERS_PATH = path.join(process.cwd(), 'data', 'orders.json');
 const CART_PATH = path.join(process.cwd(), 'data', 'cart.json');
@@ -14,9 +18,11 @@ async function readJson(filePath: string) {
   try {
     const raw = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(raw);
-  } catch (error) {
-    console.error('Failed to read JSON from', filePath, error);
-    return null;
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to read JSON from' + filePath },
+      { status: 400 }
+    );
   }
 }
 
@@ -43,18 +49,13 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
-
-    // connect to DB and fetch product details
-    await connectDB();
-
-    const origin = new URL(request.url).origin;
-
     const productPromises = products.map(async (productId: string) => {
-      const product = await Camera.findById(productId).lean();
+      const product = (await Camera.findById(
+        productId
+      ).lean()) as ProductWithImage;
       if (!product) throw new Error('Product not found: ' + productId);
-      if ((product as any).imageUrl)
-        (product as any).imageUrl =
-          `${origin}/images/${(product as any).imageUrl}`;
+      if (product.imageUrl)
+        product.imageUrl = `${origin}/images/${product.imageUrl}`;
       return product;
     });
 
@@ -71,17 +72,16 @@ export async function POST(request: Request) {
     const existing = (await readJson(ORDERS_PATH)) || { orders: [] };
     existing.orders.push(order);
     await writeJson(ORDERS_PATH, existing);
-
-    // clear server cart
     await writeJson(CART_PATH, { items: [] });
 
     return NextResponse.json(
       { contact, products: productsFull, orderId },
       { status: 201 }
     );
-  } catch (error: unknown) {
-    console.error('Failed to create order', error);
-    const message = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to create order' },
+      { status: 500 }
+    );
   }
 }

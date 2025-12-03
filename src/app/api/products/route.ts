@@ -12,9 +12,9 @@ export async function GET() {
     const products = [...cameras];
 
     return NextResponse.json(products);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: error + 'Failed to fetch products' },
+      { error: 'Failed to fetch products' },
       { status: 500 }
     );
   }

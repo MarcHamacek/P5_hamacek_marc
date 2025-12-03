@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { NextResponse } from 'next/server';
+
 import { Grid } from '@mui/material';
 
 import { Hero, LoadingSpinner, ProductCard } from '@/components';
@@ -23,7 +25,10 @@ export default function Home() {
         const productsList = Array.isArray(data) ? data : data.products || [];
         setProducts(productsList);
       } catch {
-        console.error('Failed to load products');
+        NextResponse.json(
+          { error: 'Failed to load products' },
+          { status: 500 }
+        );
         setProducts([]);
       } finally {
         setLoading(false);

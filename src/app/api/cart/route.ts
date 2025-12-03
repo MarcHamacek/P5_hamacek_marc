@@ -15,8 +15,8 @@ async function readCart(): Promise<{ items: CartItem[] }> {
   try {
     const raw = await fs.readFile(CART_PATH, 'utf-8');
     return JSON.parse(raw);
-  } catch (err: any) {
-    // If file doesn't exist or is invalid, return empty cart
+  } catch {
+    NextResponse.json({ error: 'Failed to read cart' }, { status: 500 });
     return { items: [] };
   }
 }
@@ -32,8 +32,7 @@ export async function GET() {
   try {
     const cart = await readCart();
     return NextResponse.json(cart);
-  } catch (err) {
-    console.error('API /api/cart GET error', err);
+  } catch {
     return NextResponse.json({ error: 'Unable to read cart' }, { status: 500 });
   }
 }
@@ -63,19 +62,20 @@ export async function POST(req: Request) {
 
     await writeCart(cart);
     return NextResponse.json({ ok: true, cart });
-  } catch (err) {
-    console.error('API /api/cart POST error', err);
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+  } catch {
+    return NextResponse.json(
+      { error: 'API /api/cart POST error' },
+      { status: 400 }
+    );
   }
 }
 
 export async function DELETE(req: Request) {
   try {
-    // allow removing a specific item by productId+option or clearing the cart
-    let body: any = {};
+    let body: { productId?: string; option?: string } = {};
     try {
       body = await req.json();
-    } catch (e) {
+    } catch {
       body = {};
     }
     const { productId, option } = body || {};
@@ -98,8 +98,10 @@ export async function DELETE(req: Request) {
     const newCart = { items: filtered };
     await writeCart(newCart);
     return NextResponse.json({ ok: true, cart: newCart });
-  } catch (err) {
-    console.error('API /api/cart DELETE error', err);
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  } catch {
+    return NextResponse.json(
+      { error: 'API /api/cart DELETE error' },
+      { status: 400 }
+    );
   }
 }

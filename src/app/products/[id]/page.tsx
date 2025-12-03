@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 
+import { NextResponse } from 'next/server';
+
 import {
   Card,
   CardContent,
@@ -26,7 +28,7 @@ export default function ProductPage({
   const [product, setProduct] = useState<Camera | null>(null);
   const [cartLoading, setCartLoading] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorStatus, setErrorStatus] = useState(false);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -39,7 +41,7 @@ export default function ProductPage({
         const data = await res.json();
         setProduct(data);
       } catch {
-        console.log('Failed to load product');
+        NextResponse.json({ error: 'Failed to load product' }, { status: 500 });
         setProduct(null);
       } finally {
         setLoading(false);
@@ -53,7 +55,7 @@ export default function ProductPage({
     option: string
   ): Promise<void> => {
     setCartLoading(true);
-    setErrorMessage(null);
+    setErrorStatus(false);
     try {
       const res = await fetch(`/api/cart`, {
         method: 'POST',
@@ -65,11 +67,12 @@ export default function ProductPage({
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 3000);
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
-      setErrorMessage(errorMsg);
-      setTimeout(() => setErrorMessage(null), 3000);
-      console.error('Failed to add product to cart', err);
+    } catch {
+      NextResponse.json(
+        { error: 'Failed to add product to cart' },
+        { status: 500 }
+      );
+      setTimeout(() => setErrorStatus(true), 3000);
     } finally {
       setCartLoading(false);
     }
@@ -102,7 +105,7 @@ export default function ProductPage({
             />
           </Grid>
         )}
-        {errorMessage && (
+        {errorStatus && (
           <Grid sx={{ width: '100%' }}>
             <AlertMessage
               content="Votre produit n'a pas pu être ajouté au panier."
