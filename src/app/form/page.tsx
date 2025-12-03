@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { NextResponse } from 'next/server';
+
 import { LocalShipping } from '@mui/icons-material';
 import {
   Grid,
@@ -71,8 +73,8 @@ export default function CartPage() {
       const { orderId } = body;
 
       window.location.href = '/confirmation?orderId=' + orderId;
-    } catch (err) {
-      console.error('Order submit failed', err);
+    } catch {
+      NextResponse.json({ error: 'Order submit failed' }, { status: 500 });
       setLoading(false);
     }
   };
