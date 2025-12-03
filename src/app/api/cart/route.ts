@@ -72,8 +72,7 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    // allow removing a specific item by productId+option or clearing the cart
-    let body: any = {};
+    let body: { productId?: string; option?: string } = {};
     try {
       body = await req.json();
     } catch {

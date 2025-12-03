@@ -5,7 +5,11 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 import Camera from '@/lib/models/Camera';
-import connectDB from '@/lib/mongodb';
+
+type ProductWithImage = {
+  imageUrl?: string;
+  [key: string]: unknown;
+};
 
 const ORDERS_PATH = path.join(process.cwd(), 'data', 'orders.json');
 const CART_PATH = path.join(process.cwd(), 'data', 'cart.json');
@@ -45,17 +49,13 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
-
-    await connectDB();
-
-    const origin = new URL(request.url).origin;
-
     const productPromises = products.map(async (productId: string) => {
-      const product = await Camera.findById(productId).lean();
+      const product = (await Camera.findById(
+        productId
+      ).lean()) as ProductWithImage;
       if (!product) throw new Error('Product not found: ' + productId);
-      if ((product as any).imageUrl)
-        (product as any).imageUrl =
-          `${origin}/images/${(product as any).imageUrl}`;
+      if (product.imageUrl)
+        product.imageUrl = `${origin}/images/${product.imageUrl}`;
       return product;
     });
 
